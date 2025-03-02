@@ -1,0 +1,1 @@
+{"numerical": ["CustAccountBalance", "TransactionTime", "TransactionAmount (INR)"], "categorical": ["TransactionID", "CustomerID", "CustomerDOB", "CustGender", "CustLocation", "TransactionDate"]}
