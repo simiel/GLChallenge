@@ -249,19 +249,11 @@ class CustomerFeatureProcessor:
         date_columns = [col for col in df.columns if pd.api.types.is_datetime64_any_dtype(df[col])]
         X = df.drop(columns=['CustomerID'] + date_columns)
         
-        # Handle categorical variables
-        for column in CATEGORICAL_COLUMNS:
-            if column in X.columns:
-                # Fill missing values with most common value
-                X[column] = X[column].fillna(X[column].mode()[0])
-                X[column] = self.label_encoders[column].fit_transform(X[column])
-        
-        # Ensure all remaining columns are numeric
-        for col in X.columns:
-            if not pd.api.types.is_numeric_dtype(X[col]):
-                print(f"Warning: Converting {col} to numeric...")
-                X[col] = pd.to_numeric(X[col], errors='coerce')
-                X[col] = X[col].fillna(X[col].median())
+        # Handle categorical columns
+        for col in CATEGORICAL_COLUMNS:
+            if col in X.columns:
+                # Fit and transform
+                X[col] = self.label_encoders[col].fit_transform(X[col])
         
         # Scale numerical features
         numerical_columns = [col for col in X.columns if col not in CATEGORICAL_COLUMNS]
