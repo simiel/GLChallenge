@@ -10,65 +10,47 @@ def train_model(
     X: pd.DataFrame,
     y: np.ndarray,
     model_type: str = 'rf',
-    test_size: float = 0.2,
     random_state: int = 42
 ) -> Tuple[Any, Dict]:
     """
     Train a supervised model for churn prediction
     """
-    # Split data
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=test_size, random_state=random_state
-    )
-    
-    # Initialize model
     if model_type == 'rf':
         model = RandomForestClassifier(
             n_estimators=100,
-            max_depth=None,
-            min_samples_split=2,
-            random_state=random_state
-        )
-    elif model_type == 'gb':
-        model = GradientBoostingClassifier(
-            n_estimators=100,
-            learning_rate=0.1,
-            max_depth=3,
+            max_depth=10,
             random_state=random_state
         )
     else:
-        raise ValueError(f"Unknown model type: {model_type}")
+        raise ValueError(f"Unsupported model type: {model_type}")
     
     # Train model
-    model.fit(X_train, y_train)
+    model.fit(X, y)
     
     # Make predictions
-    y_pred = model.predict(X_test)
-    y_pred_proba = model.predict_proba(X_test)[:, 1]
+    y_pred = model.predict(X)
+    y_prob = model.predict_proba(X)[:, 1]
     
     # Calculate metrics
     metrics = {
-        'accuracy': accuracy_score(y_test, y_pred),
-        'precision': precision_score(y_test, y_pred),
-        'recall': recall_score(y_test, y_pred),
-        'f1': f1_score(y_test, y_pred),
-        'roc_auc': roc_auc_score(y_test, y_pred_proba)
+        'accuracy': float(accuracy_score(y, y_pred)),
+        'precision': float(precision_score(y, y_pred)),
+        'recall': float(recall_score(y, y_pred)),
+        'f1': float(f1_score(y, y_pred)),
+        'roc_auc': float(roc_auc_score(y, y_prob))
     }
     
     # Get feature importance
-    if hasattr(model, 'feature_importances_'):
-        feature_importance = pd.DataFrame({
-            'feature': X.columns,
-            'importance': model.feature_importances_
-        }).sort_values('importance', ascending=False)
-    else:
-        feature_importance = None
+    feature_importance = {
+        'features': X.columns.tolist(),
+        'importance': model.feature_importances_.tolist()
+    }
     
     artifacts = {
         'metrics': metrics,
         'feature_importance': feature_importance,
-        'test_indices': X_test.index,
-        'model_type': model_type
+        'model_type': model_type,
+        'model_params': model.get_params()
     }
     
     return model, artifacts

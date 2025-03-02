@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from typing import Tuple, Dict
+from typing import Tuple, Dict, List
 from sklearn.preprocessing import StandardScaler
 from sklearn.impute import SimpleImputer
 
@@ -49,78 +49,137 @@ def preprocess_categorical_features(df: pd.DataFrame, categorical_columns: list)
     # One-hot encoding
     df_encoded = pd.get_dummies(df_cat, prefix_sep='_')
     
-    # Store category mappings
+    # Store category mappings and column names
     category_mappings = {
         col: df_cat[col].unique().tolist()
         for col in categorical_columns
     }
     
-    return df_encoded, category_mappings
+    # Store encoded column names
+    encoded_columns = df_encoded.columns.tolist()
+    
+    mappings = {
+        'categories': category_mappings,
+        'encoded_columns': encoded_columns
+    }
+    
+    return df_encoded, mappings
 
 def prepare_features(
     df: pd.DataFrame,
-    numerical_columns: list,
-    categorical_columns: list
+    numerical_columns: List[str],
+    categorical_columns: List[str]
 ) -> Tuple[pd.DataFrame, Dict]:
     """
-    Prepare all features for modeling
-    Returns preprocessed data and preprocessing artifacts
+    Prepare features for modeling and return preprocessing artifacts
     """
-    # Preprocess numerical features
-    df_num, num_preprocessors = preprocess_numerical_features(df, numerical_columns)
-    
-    # Preprocess categorical features
-    df_cat, cat_mappings = preprocess_categorical_features(df, categorical_columns)
-    
-    # Combine features
-    df_processed = pd.concat([df_num, df_cat], axis=1)
-    
-    preprocessing_artifacts = {
-        'numerical_preprocessors': num_preprocessors,
-        'categorical_mappings': cat_mappings,
-        'feature_columns': {
-            'numerical': numerical_columns,
-            'categorical': categorical_columns
-        }
+    # Initialize preprocessing artifacts
+    artifacts = {
+        'numerical_columns': numerical_columns,
+        'categorical_columns': categorical_columns,
+        'scaler': StandardScaler(),
+        'categorical_values': {},
+        'feature_names': []  # Store feature names in order
     }
     
-    return df_processed, preprocessing_artifacts
+    # Process numerical features
+    if numerical_columns:
+        numerical_data = df[numerical_columns].copy()
+        # Fill missing values with median
+        for col in numerical_columns:
+            median = numerical_data[col].median()
+            numerical_data[col] = numerical_data[col].fillna(median)
+            artifacts[f'{col}_median'] = median
+        
+        # Scale numerical features
+        numerical_scaled = pd.DataFrame(
+            artifacts['scaler'].fit_transform(numerical_data),
+            columns=numerical_columns,
+            index=df.index
+        )
+        artifacts['feature_names'].extend(numerical_columns)
+    else:
+        numerical_scaled = pd.DataFrame(index=df.index)
+    
+    # Process categorical features
+    if categorical_columns:
+        categorical_encoded_dfs = []
+        for col in categorical_columns:
+            # Get unique values and store in artifacts
+            unique_values = sorted(df[col].dropna().unique())
+            artifacts['categorical_values'][col] = unique_values
+            
+            # Create dummy variables
+            dummies = pd.get_dummies(df[col], prefix=col, dummy_na=True)
+            categorical_encoded_dfs.append(dummies)
+            
+            # Store feature names
+            artifacts['feature_names'].extend(dummies.columns.tolist())
+        
+        # Combine all encoded categorical features
+        categorical_encoded = pd.concat(categorical_encoded_dfs, axis=1)
+    else:
+        categorical_encoded = pd.DataFrame(index=df.index)
+    
+    # Combine numerical and categorical features
+    processed_df = pd.concat([numerical_scaled, categorical_encoded], axis=1)
+    
+    return processed_df, artifacts
 
 def transform_new_data(
     df: pd.DataFrame,
-    preprocessing_artifacts: Dict
+    artifacts: Dict
 ) -> pd.DataFrame:
     """
-    Transform new data using fitted preprocessors
+    Transform new data using saved preprocessing artifacts
     """
-    num_cols = preprocessing_artifacts['feature_columns']['numerical']
-    cat_cols = preprocessing_artifacts['feature_columns']['categorical']
+    numerical_columns = artifacts['numerical_columns']
+    categorical_columns = artifacts['categorical_columns']
+    feature_names = artifacts['feature_names']
     
-    # Transform numerical features
-    df_num = df[num_cols].copy()
-    imputer = preprocessing_artifacts['numerical_preprocessors']['imputer']
-    scaler = preprocessing_artifacts['numerical_preprocessors']['scaler']
+    # Process numerical features
+    if numerical_columns:
+        numerical_data = df[numerical_columns].copy()
+        # Fill missing values with stored medians
+        for col in numerical_columns:
+            numerical_data[col] = numerical_data[col].fillna(artifacts[f'{col}_median'])
+        
+        # Scale numerical features
+        numerical_scaled = pd.DataFrame(
+            artifacts['scaler'].transform(numerical_data),
+            columns=numerical_columns,
+            index=df.index
+        )
+    else:
+        numerical_scaled = pd.DataFrame(index=df.index)
     
-    df_num_imputed = pd.DataFrame(
-        imputer.transform(df_num),
-        columns=df_num.columns,
-        index=df_num.index
-    )
-    df_num_scaled = pd.DataFrame(
-        scaler.transform(df_num_imputed),
-        columns=df_num.columns,
-        index=df_num.index
-    )
+    # Process categorical features
+    if categorical_columns:
+        categorical_encoded_dfs = []
+        for col in categorical_columns:
+            # Create dummy variables for known categories
+            dummies = pd.DataFrame(0, index=df.index, columns=[
+                f"{col}_{value}" for value in artifacts['categorical_values'][col]
+            ])
+            
+            # Set values for known categories
+            for value in artifacts['categorical_values'][col]:
+                col_name = f"{col}_{value}"
+                dummies[col_name] = (df[col] == value).astype(float)
+            
+            # Handle unknown values
+            dummies[f"{col}_nan"] = df[col].isna().astype(float)
+            categorical_encoded_dfs.append(dummies)
+        
+        # Combine all encoded categorical features
+        categorical_encoded = pd.concat(categorical_encoded_dfs, axis=1)
+    else:
+        categorical_encoded = pd.DataFrame(index=df.index)
     
-    # Transform categorical features
-    df_cat = df[cat_cols].copy()
-    df_encoded = pd.get_dummies(df_cat, prefix_sep='_')
+    # Combine numerical and categorical features
+    processed_df = pd.concat([numerical_scaled, categorical_encoded], axis=1)
     
-    # Ensure all columns from training are present
-    for col in preprocessing_artifacts['categorical_mappings']:
-        expected_cols = [f"{col}_{val}" for val in preprocessing_artifacts['categorical_mappings'][col]]
-        for exp_col in expected_cols:
-            if exp_col not in df_encoded.columns:
-                df_encoded[exp_col] = 0
+    # Ensure columns are in the same order as during training
+    processed_df = processed_df.reindex(columns=feature_names, fill_value=0)
     
-    return pd.concat([df_num_scaled, df_encoded], axis=1) 
+    return processed_df 
