@@ -15,15 +15,27 @@ ARTIFACTS_DIR = BASE_DIR / "artifacts"
 # Create timestamp for unique output files
 TIMESTAMP = datetime.now().strftime("%Y%m%d_%H%M%S")
 
+class NumpyEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.integer):
+            return int(obj)
+        if isinstance(obj, np.floating):
+            return float(obj)
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return super(NumpyEncoder, self).default(obj)
+
 def load_data():
-    """Load the customer churn dataset."""
-    df = pd.read_csv(DATA_DIR / "mini.csv")
+    """Load the processed customer dataset with churn targets."""
+    df = pd.read_csv(DATA_DIR / "customer_features_with_churn.csv")
     return df
 
 def generate_basic_stats(df):
     """Generate basic statistics about the dataset."""
     stats = {
         "total_customers": len(df),
+        "churned_customers": int(df['IsChurned'].sum()),
+        "churn_rate": float(df['IsChurned'].mean()),
         "missing_values": df.isnull().sum().to_dict(),
         "data_types": df.dtypes.astype(str).to_dict(),
         "numeric_columns": df.select_dtypes(include=[np.number]).columns.tolist(),
@@ -33,18 +45,18 @@ def generate_basic_stats(df):
     
     # Save statistics to JSON
     with open(ANALYSIS_DIR / f"basic_stats_{TIMESTAMP}.json", 'w') as f:
-        json.dump(stats, f, indent=4)
+        json.dump(stats, f, indent=4, cls=NumpyEncoder)
     
     return stats
 
 def analyze_churn_distribution(df):
     """Analyze and visualize churn distribution."""
-    churn_counts = df['Churn'].value_counts()
-    churn_percentages = df['Churn'].value_counts(normalize=True)
+    churn_counts = df['IsChurned'].value_counts()
+    churn_percentages = df['IsChurned'].value_counts(normalize=True)
     
     # Create pie chart
     plt.figure(figsize=(10, 6))
-    plt.pie(churn_counts, labels=churn_counts.index, autopct='%1.1f%%')
+    plt.pie(churn_counts, labels=['Active', 'Churned'], autopct='%1.1f%%')
     plt.title('Customer Churn Distribution')
     plt.savefig(ANALYSIS_DIR / f"churn_distribution_{TIMESTAMP}.png")
     plt.close()
@@ -56,36 +68,40 @@ def analyze_churn_distribution(df):
 
 def analyze_numeric_features(df):
     """Analyze numeric features and their relationship with churn."""
-    numeric_cols = df.select_dtypes(include=[np.number]).columns
+    numeric_cols = [
+        'TransactionCount', 'AverageTransactionAmount', 'TotalTransactionAmount',
+        'TransactionAmountStd', 'Age', 'AccountBalance', 'DaysSinceLastTransaction',
+        'CustomerTenure', 'TransactionsPerMonth'
+    ]
     numeric_analysis = {}
     
     for col in numeric_cols:
-        if col != 'Churn':
-            # Create box plot
-            plt.figure(figsize=(10, 6))
-            sns.boxplot(x='Churn', y=col, data=df)
-            plt.title(f'{col} Distribution by Churn Status')
-            plt.savefig(ANALYSIS_DIR / f"{col}_distribution_{TIMESTAMP}.png")
-            plt.close()
-            
-            # Calculate statistics by churn status
-            stats = df.groupby('Churn')[col].describe().to_dict()
-            numeric_analysis[col] = stats
+        # Create violin plot instead of box plot for better visualization
+        plt.figure(figsize=(10, 6))
+        sns.violinplot(data=df, x='IsChurned', y=col)
+        plt.title(f'{col} Distribution by Churn Status')
+        plt.xticks([0, 1], ['Active', 'Churned'])
+        plt.savefig(ANALYSIS_DIR / f"{col}_distribution_{TIMESTAMP}.png")
+        plt.close()
+        
+        # Calculate statistics by churn status
+        stats = df.groupby('IsChurned')[col].describe().to_dict()
+        numeric_analysis[col] = stats
     
     # Save numeric analysis to JSON
     with open(ANALYSIS_DIR / f"numeric_analysis_{TIMESTAMP}.json", 'w') as f:
-        json.dump(numeric_analysis, f, indent=4)
+        json.dump(numeric_analysis, f, indent=4, cls=NumpyEncoder)
     
     return numeric_analysis
 
 def analyze_categorical_features(df):
     """Analyze categorical features and their relationship with churn."""
-    categorical_cols = df.select_dtypes(include=['object']).columns
+    categorical_cols = ['Gender', 'Location']
     categorical_analysis = {}
     
     for col in categorical_cols:
         # Create contingency table
-        contingency = pd.crosstab(df[col], df['Churn'])
+        contingency = pd.crosstab(df[col], df['IsChurned'])
         
         # Calculate percentages
         percentages = contingency.div(contingency.sum(axis=1), axis=0)
@@ -95,6 +111,7 @@ def analyze_categorical_features(df):
         percentages.plot(kind='bar', stacked=True)
         plt.title(f'{col} Distribution by Churn Status')
         plt.xticks(rotation=45)
+        plt.legend(['Active', 'Churned'])
         plt.tight_layout()
         plt.savefig(ANALYSIS_DIR / f"{col}_distribution_{TIMESTAMP}.png")
         plt.close()
@@ -106,26 +123,30 @@ def analyze_categorical_features(df):
     
     # Save categorical analysis to JSON
     with open(ANALYSIS_DIR / f"categorical_analysis_{TIMESTAMP}.json", 'w') as f:
-        json.dump(categorical_analysis, f, indent=4)
+        json.dump(categorical_analysis, f, indent=4, cls=NumpyEncoder)
     
     return categorical_analysis
 
 def generate_correlation_matrix(df):
     """Generate correlation matrix for numeric features."""
-    numeric_df = df.select_dtypes(include=[np.number])
-    correlation_matrix = numeric_df.corr()
+    numeric_cols = [
+        'TransactionCount', 'AverageTransactionAmount', 'TotalTransactionAmount',
+        'TransactionAmountStd', 'Age', 'AccountBalance', 'DaysSinceLastTransaction',
+        'CustomerTenure', 'TransactionsPerMonth', 'IsChurned'
+    ]
+    correlation_matrix = df[numeric_cols].corr()
     
     # Create heatmap
     plt.figure(figsize=(12, 8))
-    sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', center=0)
-    plt.title('Correlation Matrix of Numeric Features')
+    sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', center=0, fmt='.2f')
+    plt.title('Correlation Matrix of Features with Churn')
     plt.tight_layout()
     plt.savefig(ANALYSIS_DIR / f"correlation_matrix_{TIMESTAMP}.png")
     plt.close()
     
     # Save correlation matrix to JSON
     with open(ANALYSIS_DIR / f"correlation_matrix_{TIMESTAMP}.json", 'w') as f:
-        json.dump(correlation_matrix.to_dict(), f, indent=4)
+        json.dump(correlation_matrix.to_dict(), f, indent=4, cls=NumpyEncoder)
     
     return correlation_matrix
 
@@ -136,20 +157,23 @@ def main():
     
     print("Generating basic statistics...")
     basic_stats = generate_basic_stats(df)
+    print(f"Total customers: {basic_stats['total_customers']}")
+    print(f"Churn rate: {basic_stats['churn_rate']:.2%}")
     
-    print("Analyzing churn distribution...")
+    print("\nAnalyzing churn distribution...")
     churn_analysis = analyze_churn_distribution(df)
     
-    print("Analyzing numeric features...")
+    print("\nAnalyzing numeric features...")
     numeric_analysis = analyze_numeric_features(df)
     
-    print("Analyzing categorical features...")
+    print("\nAnalyzing categorical features...")
     categorical_analysis = analyze_categorical_features(df)
     
-    print("Generating correlation matrix...")
+    print("\nGenerating correlation matrix...")
     correlation_matrix = generate_correlation_matrix(df)
     
-    print("Analysis complete! Results saved in the analysis directory.")
+    print("\nAnalysis complete! Results saved in the analysis directory.")
+    print(f"Timestamp: {TIMESTAMP}")
 
 if __name__ == "__main__":
     main() 

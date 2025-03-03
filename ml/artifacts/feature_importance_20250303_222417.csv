@@ -1,0 +1,12 @@
+feature,importance
+AccountBalance,0.6806400354496189
+CustomerTenure,0.14426153334312936
+TransactionCount,0.06790099251858758
+TransactionAmountStd,0.05319311801094498
+TransactionsPerMonth,0.04510114875720396
+TotalTransactionAmount,0.0035477149012307536
+AverageTransactionAmount,0.002994153106811062
+DaysSinceLastTransaction,0.0016599177780393802
+Location_encoded,0.0003758226941301206
+Age,0.0002882678086707097
+Gender_encoded,3.729563163301725e-05

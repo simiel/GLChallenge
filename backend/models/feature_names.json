@@ -1,0 +1,1 @@
+["TransactionCount", "AverageTransactionAmount", "TotalTransactionAmount", "TransactionAmountStd", "Age", "AccountBalance", "DaysSinceLastTransaction", "CustomerTenure", "TransactionsPerMonth", "Gender_encoded", "Location_encoded"]

@@ -1,0 +1,160 @@
+{
+    "total_customers": 884265,
+    "churned_customers": 20997,
+    "churn_rate": 0.023745144272361792,
+    "missing_values": {
+        "CustomerID": 0,
+        "TransactionCount": 0,
+        "AverageTransactionAmount": 0,
+        "TotalTransactionAmount": 0,
+        "TransactionAmountStd": 740653,
+        "Age": 2372,
+        "Gender": 803,
+        "Location": 114,
+        "AccountBalance": 1665,
+        "FirstTransaction": 0,
+        "LastTransaction": 0,
+        "DaysSinceLastTransaction": 0,
+        "CustomerTenure": 0,
+        "TransactionsPerMonth": 0,
+        "IsChurned": 0
+    },
+    "data_types": {
+        "CustomerID": "object",
+        "TransactionCount": "int64",
+        "AverageTransactionAmount": "float64",
+        "TotalTransactionAmount": "float64",
+        "TransactionAmountStd": "float64",
+        "Age": "float64",
+        "Gender": "object",
+        "Location": "object",
+        "AccountBalance": "float64",
+        "FirstTransaction": "object",
+        "LastTransaction": "object",
+        "DaysSinceLastTransaction": "int64",
+        "CustomerTenure": "int64",
+        "TransactionsPerMonth": "float64",
+        "IsChurned": "int64"
+    },
+    "numeric_columns": [
+        "TransactionCount",
+        "AverageTransactionAmount",
+        "TotalTransactionAmount",
+        "TransactionAmountStd",
+        "Age",
+        "AccountBalance",
+        "DaysSinceLastTransaction",
+        "CustomerTenure",
+        "TransactionsPerMonth",
+        "IsChurned"
+    ],
+    "categorical_columns": [
+        "CustomerID",
+        "Gender",
+        "Location",
+        "FirstTransaction",
+        "LastTransaction"
+    ],
+    "summary_stats": {
+        "TransactionCount": {
+            "count": 884265.0,
+            "mean": 1.1858062911005185,
+            "std": 0.45068328251749945,
+            "min": 1.0,
+            "25%": 1.0,
+            "50%": 1.0,
+            "75%": 1.0,
+            "max": 6.0
+        },
+        "AverageTransactionAmount": {
+            "count": 884265.0,
+            "mean": 1574.7810081655396,
+            "std": 6443.0499710281965,
+            "min": 0.0,
+            "25%": 192.0,
+            "50%": 500.0,
+            "75%": 1248.0,
+            "max": 1560034.99
+        },
+        "TotalTransactionAmount": {
+            "count": 884265.0,
+            "mean": 1866.8563513991849,
+            "std": 7207.209860803967,
+            "min": 0.0,
+            "25%": 200.0,
+            "50%": 536.8,
+            "75%": 1500.0,
+            "max": 1560034.99
+        },
+        "TransactionAmountStd": {
+            "count": 143612.0,
+            "mean": 1702.158533720702,
+            "std": 5681.883399241538,
+            "min": 0.0,
+            "25%": 169.7056274847714,
+            "50%": 494.26764004939673,
+            "75%": 1296.1267299149415,
+            "max": 511784.0892329499
+        },
+        "Age": {
+            "count": 881893.0,
+            "mean": 31.123178208694252,
+            "std": 50.65069389263871,
+            "min": -58.0,
+            "25%": 24.0,
+            "50%": 28.0,
+            "75%": 33.0,
+            "max": 216.0
+        },
+        "AccountBalance": {
+            "count": 882600.0,
+            "mean": 115409.08095850897,
+            "std": 856741.3871102415,
+            "min": 0.0,
+            "25%": 4737.65,
+            "50%": 16814.775,
+            "75%": 57677.22,
+            "max": 115035495.1
+        },
+        "DaysSinceLastTransaction": {
+            "count": 884265.0,
+            "mean": 55.30730493686847,
+            "std": 15.226654172391495,
+            "min": 0.0,
+            "25%": 43.0,
+            "50%": 55.0,
+            "75%": 68.0,
+            "max": 81.0
+        },
+        "CustomerTenure": {
+            "count": 884265.0,
+            "mean": 2.987712959350421,
+            "std": 8.576019707664202,
+            "min": 0.0,
+            "25%": 0.0,
+            "50%": 0.0,
+            "75%": 0.0,
+            "max": 81.0
+        },
+        "TransactionsPerMonth": {
+            "count": 884265.0,
+            "mean": Infinity,
+            "std": NaN,
+            "min": 0.7407407407407407,
+            "25%": NaN,
+            "50%": NaN,
+            "75%": NaN,
+            "max": Infinity
+        },
+        "IsChurned": {
+            "count": 884265.0,
+            "mean": 0.023745144272361792,
+            "std": 0.15225419078377309,
+            "min": 0.0,
+            "25%": 0.0,
+            "50%": 0.0,
+            "75%": 0.0,
+            "max": 1.0
+        }
+    }
+}
