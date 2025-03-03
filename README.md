@@ -1,149 +1,107 @@
-# AI-Driven CRM Analytics & Customer Churn Prediction
+# AI-Driven Customer Churn Prediction Platform
 
-## Project Overview
-This proof of concept demonstrates an AI-driven CRM analytics platform with customer churn prediction capabilities, built using Cloudflare's serverless infrastructure and AI-assisted development via Cursor.
+A modern, full-stack application for predicting customer churn using AI and machine learning techniques. The platform features an interactive dashboard and is deployed on Cloudflare's edge network.
 
-### 🎯 Objective
-Design and implement a containerized CRM analytics platform that leverages AI for customer churn prediction, utilizing Cloudflare's free-tier services and AI-assisted development practices.
+## Architecture
 
-### 🏗️ Technical Stack
-- **Frontend**: React with Shadcn UI
-- **Backend**: Cloudflare Workers
-- **Hosting**: Cloudflare Pages
-- **Development**: AI-assisted (Cursor)
-- **Deployment**: Containerized, zero-cost architecture
+- **Frontend**: React + Shadcn UI for modern, responsive dashboard
+- **Backend**: Python-based ML pipeline with ensemble models
+- **API**: Cloudflare Workers for serverless endpoints
+- **Deployment**: Cloudflare Pages (Frontend) + Cloudflare Workers (Backend)
+- **Containerization**: Docker for consistent development and deployment
 
-### 🔑 Key Features
-1. **Data Processing**
-   - Kaggle dataset integration
-   - Automated data ingestion pipeline
-   - AI-driven feature engineering
-
-2. **Machine Learning**
-   - Ensemble churn prediction model
-   - Advanced feature engineering
-   - Model validation and metrics
-   - Real-time prediction capabilities
-
-3. **User Interface**
-   - Interactive analytics dashboard
-   - Data visualization components
-   - Customer insights display
-   - Responsive design
-
-4. **Backend Services**
-   - RESTful API endpoints
-   - Serverless compute
-   - Secure data handling
-   - Scalable architecture
-
-### ⏰ Timeline
-- **Start Date**: February 28, 2025
-- **Completion Deadline**: February 4, 2025 (0100 GMT)
-
-### 📋 Project Requirements
-
-#### Core Requirements
-- Containerized application architecture
-- AI-assisted development implementation
-- Zero-cost deployment using Cloudflare
-- Data ingestion and processing pipeline
-- Machine learning model implementation
-- Interactive frontend dashboard
-
-#### Technical Requirements
-- React-based frontend with Shadcn UI
-- Cloudflare Workers for backend services
-- Cloudflare Pages for hosting
-- Ensemble ML model implementation
-- Data visualization components
-- API endpoint implementation
-
-### 🚀 Getting Started
-[To be added: Setup instructions]
-
-### 📊 Progress Tracking
-[To be added: Development progress]
-
-### 📝 Documentation
-[To be added: Detailed documentation]
-
-### 🤝 Contributing
-[To be added: Contribution guidelines]
-
-### 📜 License
-[To be added: License information]
-
-### References
-1. [Cloudflare Workers Documentation](https://developers.cloudflare.com/workers/)
-2. [React Official Documentation](https://react.dev/)
-3. [Shadcn UI Components](https://ui.shadcn.com/)
-4. [Machine Learning Model Development Guide](https://scikit-learn.org/stable/tutorial/index.html)
-5. [Data Visualization with React](https://recharts.org/en-US/)
-6. [Containerization Best Practices](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/)
-
-
-### Directories
+## Project Structure
 
 ```
-GLChallenge/
-├── frontend/                   # React frontend application
-│   ├── src/
-│   │   ├── components/        # Reusable UI components
-│   │   │   ├── dashboard/     # Dashboard-specific components
-│   │   │   ├── charts/       # Data visualization components
-│   │   │   └── common/       # Shared components
-│   │   ├── hooks/            # Custom React hooks
-│   │   ├── pages/            # Page components
-│   │   ├── services/         # API service integrations
-│   │   ├── styles/           # Global styles and themes
-│   │   ├── types/           # TypeScript type definitions
-│   │   └── utils/           # Helper functions and utilities
-│   ├── public/              # Static assets
-│   └── tests/              # Frontend tests
-│
-├── backend/                # Cloudflare Workers backend
-│   ├── src/
-│   │   ├── handlers/      # API route handlers
-│   │   ├── middleware/    # Request/response middleware
-│   │   ├── models/        # Data models
-│   │   ├── services/      # Business logic
-│   │   └── utils/         # Helper functions
-│   └── tests/            # Backend tests
-│
-├── ml/                    # Machine Learning components
-│   ├── models/           # Trained ML models
-│   ├── notebooks/        # Jupyter notebooks for analysis
-│   ├── preprocessing/    # Data preprocessing scripts
-│   ├── training/        # Model training scripts
-│   └── utils/           # ML utilities
-│
-├── data/                 # Data management
-│   ├── raw/             # Original dataset
-│   ├── processed/       # Processed dataset
-│   └── schemas/         # Data validation schemas
-│
-├── infrastructure/       # Infrastructure as code
-│   ├── docker/          # Docker configuration
-│   └── cloudflare/      # Cloudflare configuration
-│
-├── docs/                # Documentation
-│   ├── api/            # API documentation
-│   ├── ml/             # ML model documentation
-│   └── setup/          # Setup guides
-│
-└── scripts/            # Development and deployment scripts
+.
+├── frontend/           # React dashboard application
+├── backend/           # Python ML pipeline
+│   ├── data/         # Data processing scripts
+│   ├── models/       # ML model implementations
+│   └── api/          # API endpoints
+├── workers/          # Cloudflare Workers code
+└── docker/           # Docker configuration files
 ```
 
-### Key Files
+## Prerequisites
 
+- Node.js 18+
+- Python 3.9+
+- Docker
+- Cloudflare account
+- Kaggle API credentials
+
+## Setup Instructions
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd customer-churn-prediction
 ```
-GLChallenge/
-├── .gitignore                # Git ignore rules
-├── README.md                 # Project documentation
-├── package.json              # Project dependencies
-├── tsconfig.json            # TypeScript configuration
-├── docker-compose.yml       # Docker composition
-├── .env.example            # Environment variables template
-└── wrangler.toml          # Cloudflare Workers configuration
+
+2. Set up the Python environment:
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate  # On Windows: .\venv\Scripts\activate
+pip install -r requirements.txt
 ```
+
+3. Set up the frontend:
+```bash
+cd frontend
+npm install
+```
+
+4. Configure environment variables:
+```bash
+cp .env.example .env
+# Edit .env with your configuration
+```
+
+5. Run the development environment:
+```bash
+# Terminal 1 - Backend
+cd backend
+python main.py
+
+# Terminal 2 - Frontend
+cd frontend
+npm run dev
+```
+
+## Deployment
+
+1. Deploy the frontend to Cloudflare Pages:
+```bash
+cd frontend
+npm run build
+# Deploy using Cloudflare Pages dashboard
+```
+
+2. Deploy the backend to Cloudflare Workers:
+```bash
+cd workers
+wrangler deploy
+```
+
+## Features
+
+- Interactive data visualization dashboard
+- Real-time churn prediction
+- Feature importance analysis
+- Customer segmentation
+- Automated model retraining
+- Edge computing for low-latency predictions
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a new Pull Request
+
+## License
+
+MIT License - see LICENSE file for details

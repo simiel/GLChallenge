@@ -1,0 +1,19 @@
+name = "customer-churn-dashboard"
+type = "webpack"
+account_id = ""
+workers_dev = true
+
+[site]
+bucket = "./dist"
+include = ["**/*"]
+exclude = ["node_modules/*"]
+
+[env.production]
+vars = { API_URL = "https://api.your-domain.workers.dev" }
+
+[env.development]
+vars = { API_URL = "http://localhost:8000" }
+
+[[routes]]
+pattern = "/*"
+zone_id = "" 
