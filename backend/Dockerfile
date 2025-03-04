@@ -20,5 +20,9 @@ EXPOSE 5000
 ENV FLASK_APP=app.py
 ENV FLASK_ENV=production
 
+# Add debugging information
+RUN echo "Contents of /app:" && dir /app
+RUN echo "Contents of /app/models:" && dir /app\models
+
 # Run the application with Waitress
 CMD ["waitress-serve", "--host=0.0.0.0", "--port=5000", "app:app"] 
