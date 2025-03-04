@@ -1,9 +1,10 @@
 import { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
-import { DataTable } from "@/components/customers/data-table";
-import { columns } from "@/components/customers/columns";
+
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { DataTable } from "../../../../components/customers/data-table";
+import { columns } from "../../../../components/customers/columns";
 
 export const metadata: Metadata = {
   title: "Customers | CRM Admin",

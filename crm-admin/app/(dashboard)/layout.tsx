@@ -21,11 +21,11 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="min-h-screen flex">
       <Sidebar />
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 ml-64">
         <Header user={session.user} />
-        <main className="p-6">{children}</main>
+        <main className="p-8">{children}</main>
       </div>
     </div>
   );
