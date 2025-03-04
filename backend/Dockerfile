@@ -21,8 +21,8 @@ ENV FLASK_APP=app.py
 ENV FLASK_ENV=production
 
 # Add debugging information
-RUN echo "Contents of /app:" && dir /app
-RUN echo "Contents of /app/models:" && dir /app\models
+RUN powershell -Command "Write-Host 'Contents of /app:'; Get-ChildItem C:\app"
+RUN powershell -Command "Write-Host 'Contents of /app/models:'; Get-ChildItem C:\app\models"
 
 # Run the application with Waitress
 CMD ["waitress-serve", "--host=0.0.0.0", "--port=5000", "app:app"] 
