@@ -9,8 +9,8 @@ import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useToast } from "../ui/toast";
 import { Icons } from "../ui/icons";
+import { useToast } from "../ui/use-toast";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
