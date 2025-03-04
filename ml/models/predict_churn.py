@@ -40,7 +40,9 @@ def create_sample_data(label_encoders):
     """Create sample customer data for prediction."""
     # Get available categories
     available_genders = label_encoders['Gender'].classes_.tolist()
+    print(f"Available genders: {available_genders}")
     available_locations = label_encoders['Location'].classes_.tolist()
+    print(f"Available locations: {available_locations}")
     
     # Create sample customers with different profiles
     samples = [
