@@ -4,15 +4,9 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Customer, User } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+
 import Link from "next/link";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 
 export type CustomerWithAssignedTo = Customer & {
   assignedTo: User | null;
