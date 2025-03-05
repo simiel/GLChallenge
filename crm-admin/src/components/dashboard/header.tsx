@@ -3,7 +3,7 @@
 import { useSession } from 'next-auth/react';
 import { Bell } from 'lucide-react';
 
-export function Header() {
+export function Header({user}: {user: any}) {
   const { data: session } = useSession();
 
   return (

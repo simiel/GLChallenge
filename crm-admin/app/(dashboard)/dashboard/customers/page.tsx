@@ -37,7 +37,16 @@ export default async function CustomersPage() {
           <Link href="/dashboard/customers/new">Add Customer</Link>
         </Button>
       </div>
-      <DataTable columns={columns} data={customers} />
+      <DataTable 
+        columns={columns} 
+        data={customers.map(customer => ({
+          ...customer,
+          predictions: customer.predictions.map(prediction => ({
+            churnRisk: prediction.churnProbability,
+            createdAt: prediction.createdAt
+          }))
+        }))} 
+      />
     </div>
   );
-} 
+}

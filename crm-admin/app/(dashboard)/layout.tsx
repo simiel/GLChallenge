@@ -24,7 +24,7 @@ export default function DashboardLayout({
     <div className="min-h-screen flex">
       <Sidebar />
       <div className="flex-1 ml-64">
-        <Header user={session.user} />
+        <Header user={session} />
         <main className="p-8">{children}</main>
       </div>
     </div>
