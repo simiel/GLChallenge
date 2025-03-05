@@ -1,0 +1,122 @@
+{
+    "TransactionCount": {
+        "TransactionCount": 1.0,
+        "AverageTransactionAmount": -0.00018213387867510407,
+        "TotalTransactionAmount": 0.09827216198088876,
+        "TransactionAmountStd": 0.018677893441398054,
+        "Age": 0.0018948672989738463,
+        "AccountBalance": 0.0011805079579321604,
+        "DaysSinceLastTransaction": -0.22380757016872682,
+        "CustomerTenure": 0.7918638920086744,
+        "TransactionsPerMonth": -0.0900734547409143,
+        "IsChurned": 0.33236140068242853
+    },
+    "AverageTransactionAmount": {
+        "TransactionCount": -0.00018213387867510407,
+        "AverageTransactionAmount": 1.0,
+        "TotalTransactionAmount": 0.9602461649040852,
+        "TransactionAmountStd": 0.9730919458119827,
+        "Age": 0.03050159745626483,
+        "AccountBalance": 0.052072287945361645,
+        "DaysSinceLastTransaction": 0.0008747059258129689,
+        "CustomerTenure": -0.0001555595033852636,
+        "TransactionsPerMonth": 0.0008668040264800387,
+        "IsChurned": -0.008145561977801589
+    },
+    "TotalTransactionAmount": {
+        "TransactionCount": 0.09827216198088876,
+        "AverageTransactionAmount": 0.9602461649040852,
+        "TotalTransactionAmount": 1.0,
+        "TransactionAmountStd": 0.9698121805131223,
+        "Age": 0.030246430085749166,
+        "AccountBalance": 0.05049776077484695,
+        "DaysSinceLastTransaction": -0.02096768350836106,
+        "CustomerTenure": 0.0775872032680052,
+        "TransactionsPerMonth": -0.005548047596244237,
+        "IsChurned": 0.017471676113081487
+    },
+    "TransactionAmountStd": {
+        "TransactionCount": 0.018677893441398054,
+        "AverageTransactionAmount": 0.9730919458119827,
+        "TotalTransactionAmount": 0.9698121805131223,
+        "TransactionAmountStd": 1.0,
+        "Age": 0.02113289318002602,
+        "AccountBalance": 0.026729726753378518,
+        "DaysSinceLastTransaction": -0.0009272145910822965,
+        "CustomerTenure": 0.004385812161457058,
+        "TransactionsPerMonth": -0.0012068533779616987,
+        "IsChurned": -0.025044409167952603
+    },
+    "Age": {
+        "TransactionCount": 0.0018948672989738463,
+        "AverageTransactionAmount": 0.03050159745626483,
+        "TotalTransactionAmount": 0.030246430085749166,
+        "TransactionAmountStd": 0.02113289318002602,
+        "Age": 1.0,
+        "AccountBalance": 0.00159055813043979,
+        "DaysSinceLastTransaction": -0.004836880284985077,
+        "CustomerTenure": 0.0018342573114473485,
+        "TransactionsPerMonth": 0.005494591038771373,
+        "IsChurned": 0.00012098780461903125
+    },
+    "AccountBalance": {
+        "TransactionCount": 0.0011805079579321604,
+        "AverageTransactionAmount": 0.052072287945361645,
+        "TotalTransactionAmount": 0.05049776077484695,
+        "TransactionAmountStd": 0.026729726753378518,
+        "Age": 0.00159055813043979,
+        "AccountBalance": 1.0,
+        "DaysSinceLastTransaction": -0.0030530924100398474,
+        "CustomerTenure": 0.00045326787884537634,
+        "TransactionsPerMonth": 0.0017697968220387807,
+        "IsChurned": -0.020948977170435337
+    },
+    "DaysSinceLastTransaction": {
+        "TransactionCount": -0.22380757016872682,
+        "AverageTransactionAmount": 0.0008747059258129689,
+        "TotalTransactionAmount": -0.02096768350836106,
+        "TransactionAmountStd": -0.0009272145910822965,
+        "Age": -0.004836880284985077,
+        "AccountBalance": -0.0030530924100398474,
+        "DaysSinceLastTransaction": 1.0,
+        "CustomerTenure": -0.30844069791206263,
+        "TransactionsPerMonth": 0.34235085011993105,
+        "IsChurned": -0.07858283198301295
+    },
+    "CustomerTenure": {
+        "TransactionCount": 0.7918638920086744,
+        "AverageTransactionAmount": -0.0001555595033852636,
+        "TotalTransactionAmount": 0.0775872032680052,
+        "TransactionAmountStd": 0.004385812161457058,
+        "Age": 0.0018342573114473485,
+        "AccountBalance": 0.00045326787884537634,
+        "DaysSinceLastTransaction": -0.30844069791206263,
+        "CustomerTenure": 1.0,
+        "TransactionsPerMonth": -0.5720935759495558,
+        "IsChurned": 0.28417625012114556
+    },
+    "TransactionsPerMonth": {
+        "TransactionCount": -0.0900734547409143,
+        "AverageTransactionAmount": 0.0008668040264800387,
+        "TotalTransactionAmount": -0.005548047596244237,
+        "TransactionAmountStd": -0.0012068533779616987,
+        "Age": 0.005494591038771373,
+        "AccountBalance": 0.0017697968220387807,
+        "DaysSinceLastTransaction": 0.34235085011993105,
+        "CustomerTenure": -0.5720935759495558,
+        "TransactionsPerMonth": 1.0,
+        "IsChurned": 0.005475931134206601
+    },
+    "IsChurned": {
+        "TransactionCount": 0.33236140068242853,
+        "AverageTransactionAmount": -0.008145561977801589,
+        "TotalTransactionAmount": 0.017471676113081487,
+        "TransactionAmountStd": -0.025044409167952603,
+        "Age": 0.00012098780461903125,
+        "AccountBalance": -0.020948977170435337,
+        "DaysSinceLastTransaction": -0.07858283198301295,
+        "CustomerTenure": 0.28417625012114556,
+        "TransactionsPerMonth": 0.005475931134206601,
+        "IsChurned": 1.0
+    }
+}

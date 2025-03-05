@@ -1,0 +1,9 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+
+# Your rule content
+
+Make sure that you don't mix up stuff like && when you are writing powershell commands.

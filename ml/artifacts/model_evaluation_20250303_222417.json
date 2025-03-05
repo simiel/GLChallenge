@@ -1,0 +1,42 @@
+{
+    "random_forest": {
+        "roc_auc": 0.9999999999999999,
+        "classification_report": {
+            "0": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1-score": 1.0,
+                "support": 172654.0
+            },
+            "1": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1-score": 1.0,
+                "support": 4199.0
+            },
+            "accuracy": 1.0,
+            "macro avg": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1-score": 1.0,
+                "support": 176853.0
+            },
+            "weighted avg": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1-score": 1.0,
+                "support": 176853.0
+            }
+        },
+        "confusion_matrix": [
+            [
+                172654,
+                0
+            ],
+            [
+                0,
+                4199
+            ]
+        ]
+    }
+}
