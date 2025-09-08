@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: backend
+    env: docker
+    plan: free
+    dockerfilePath: backend/Dockerfile
+    buildCommand: ""
+    startCommand: ""
+    autoDeploy: true
+    envVars:
+      - key: FLASK_APP
+        value: app.py
+      - key: FLASK_ENV
+        value: production
+    
+  - type: web
+    name: frontend
+    env: docker
+    plan: free
+    dockerfilePath: crm-admin/Dockerfile
+    buildCommand: ""
+    startCommand: ""
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+    
