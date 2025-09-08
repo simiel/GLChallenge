@@ -277,15 +277,27 @@ export default function PredictionsPage() {
                   />
                 </div>
 
+
                 <FormField
                   control={form.control}
                   name="Location"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Location</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter customer location" {...field} />
-                      </FormControl>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select location" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="ANDHERI (E) MUMBAI">ANDHERI (E) MUMBAI</SelectItem>
+                          <SelectItem value="24 PGS">24 PGS</SelectItem>
+                          <SelectItem value="AIZAWL">AIZAWL</SelectItem>
+                          <SelectItem value="BANGALORE">BANGALORE</SelectItem>
+                          <SelectItem value="NEW DELHI">NEW DELHI</SelectItem>
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}
